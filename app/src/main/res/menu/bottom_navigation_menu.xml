@@ -3,23 +3,27 @@
         android:id="@+id/action_item1"
         android:title="Домой"
         android:icon="@drawable/home"
+        android:checkable="true"
          />
 
     <item
         android:id="@+id/action_item2"
         android:title="Еда"
         android:icon="@drawable/food"
+        android:checkable="true"
         />
 
     <item
         android:id="@+id/action_item3"
         android:title="Активность"
         android:icon="@drawable/sport"
+        android:checkable="true"
          />
 
     <item
         android:id="@+id/action_item4"
         android:title="Редактировать"
         android:icon="@drawable/edit"
+        android:checkable="true"
         />
 </menu>

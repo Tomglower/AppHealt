@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kursproj.DB.DatabaseHelper;
+import com.example.kursproj.DB.User;
 
 public class RegistrationActivity extends AppCompatActivity {
     private EditText usernameEditText;
@@ -33,11 +34,16 @@ public class RegistrationActivity extends AppCompatActivity {
                 String username = usernameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
 
-                long result = dbHelper.insertUser(username, password);
-                if (result != -1) {
-                    Toast RegOk = Toast.makeText(getApplicationContext(), "Регистрация прошла успешно!", Toast.LENGTH_SHORT);
-                    RegOk.show();
-                    startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
+                if (isUsernameAvailable(username)) {
+                    long result = dbHelper.insertUser(username, password);
+                    if (result != -1) {
+                        Toast RegOk = Toast.makeText(getApplicationContext(), "Регистрация прошла успешно!", Toast.LENGTH_SHORT);
+                        RegOk.show();
+                        startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
+                    }
+                } else {
+                    Toast RegError = Toast.makeText(getApplicationContext(), "Данный логин уже существует. Выберите другой логин.", Toast.LENGTH_SHORT);
+                    RegError.show();
                 }
             }
         });
@@ -48,5 +54,11 @@ public class RegistrationActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+
+    private boolean isUsernameAvailable(String username) {
+        User user = dbHelper.getUser(username, "");
+        return user == null;
     }
 }
