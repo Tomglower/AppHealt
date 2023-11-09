@@ -36,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "fat REAL, " +
                     "carbohydrates REAL, " +
                     "user_id INTEGER, " +
-                    "FOREIGN KEY (user_id) REFERENCES " + TABLE_NAME + "(ID))" // Создание внешнего ключа
+                    "FOREIGN KEY (user_id) REFERENCES " + TABLE_NAME + "(ID))"
             );
 
             Log.e("CreateTable", "Таблицы создались ");
