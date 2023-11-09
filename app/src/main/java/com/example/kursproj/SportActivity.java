@@ -3,20 +3,46 @@ package com.example.kursproj;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
+import com.example.kursproj.DB.DatabaseHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class SportActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
-
+    private EditText etExerciseType, etDuration, etCalories;
+    private Button btnSaveActivity;
+    private DatabaseHelper dbHelper;
+    private ListView listViewActivities;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sport);
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setSelectedItemId(R.id.action_item3);
+        dbHelper = new DatabaseHelper(this);
+
+        etExerciseType = findViewById(R.id.etExerciseType);
+        etDuration = findViewById(R.id.etDuration);
+        etCalories = findViewById(R.id.etCalories);
+        btnSaveActivity = findViewById(R.id.btnSaveActivity);
+
+        listViewActivities = findViewById(R.id.listViewActivities);
+        displayActivitiesForToday();
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -41,5 +67,75 @@ public class SportActivity extends AppCompatActivity {
                 return false;
             }
         });
+        btnSaveActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String exerciseType = etExerciseType.getText().toString();
+                String durationStr = etDuration.getText().toString();
+                String caloriesStr = etCalories.getText().toString();
+
+                if (exerciseType.isEmpty() || durationStr.isEmpty() || caloriesStr.isEmpty()) {
+                    Toast.makeText(SportActivity.this, "Пожалуйста, заполните все поля", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                int duration, calories;
+
+                try {
+                    duration = Integer.parseInt(durationStr);
+                    calories = Integer.parseInt(caloriesStr);
+                } catch (NumberFormatException e) {
+                    Toast.makeText(SportActivity.this, "Пожалуйста, введите корректные числовые значения", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                int userId = sharedPreferences.getInt("user_id", 0);
+
+                long result = dbHelper.insertSport(exerciseType, duration, calories, userId);
+
+                if (result != -1) {
+                    Toast.makeText(SportActivity.this, "Спортивная активность успешно сохранена", Toast.LENGTH_SHORT).show();
+                    displayActivitiesForToday();
+                    etExerciseType.setText("");
+                    etDuration.setText("");
+                    etCalories.setText("");
+                } else {
+                    Toast.makeText(SportActivity.this, "Произошла ошибка при сохранении спортивной активности", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+    private void displayActivitiesForToday() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String todayDate = sdf.format(new Date());
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("user_id", 0);
+
+        Cursor cursor = dbHelper.getSportsForDate(todayDate, userId);
+
+        // Определите столбцы, которые будут отображаться
+        String[] fromColumns = {
+                "exercise_type",
+                "duration",
+                "calories"
+        };
+
+        int[] toViews = {
+                R.id.exerciseTypeValue,
+                R.id.durationValue,
+                R.id.caloriesValue
+        };
+
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(
+                this,
+                R.layout.sport_list_item,
+                cursor,
+                fromColumns,
+                toViews,
+                0
+        );
+        listViewActivities.setAdapter(adapter);
     }
 }

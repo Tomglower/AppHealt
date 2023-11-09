@@ -6,7 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "users.db";
@@ -16,7 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_3 = "PASSWORD";
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 16);
+        super(context, DATABASE_NAME, null, 17);
     }
 
 
@@ -36,7 +39,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "fat REAL, " +
                     "carbohydrates REAL, " +
                     "user_id INTEGER, " +
+                    "FOREIGN KEY (user_id) REFERENCES " + TABLE_NAME + "(ID))");
+            db.execSQL("CREATE TABLE sports (" +
+                    "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "exercise_type TEXT, " +
+                    "duration INTEGER, " +
+                    "calories INTEGER, " +
+                    "date_added TEXT, " +
+                    "user_id INTEGER, " +
                     "FOREIGN KEY (user_id) REFERENCES " + TABLE_NAME + "(ID))"
+
             );
 
             Log.e("CreateTable", "Таблицы создались ");
@@ -180,6 +192,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, selectionArgs);
     }
 
+
+    public long insertSport(String exerciseType, int duration, int calories, int userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("exercise_type", exerciseType);
+        contentValues.put("duration", duration);
+        contentValues.put("calories", calories);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String dateAdded = sdf.format(new Date());
+        contentValues.put("date_added", dateAdded);
+
+        contentValues.put("user_id", userId);
+
+        return db.insert("sports", null, contentValues);
+    }
+
+    // Метод для получения спортивных активностей за определенную дату
+    public Cursor getSportsForDate(String date, int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT ID AS _id, exercise_type, duration, calories FROM sports WHERE date_added = ? AND user_id = ?";
+        String[] selectionArgs = {date, String.valueOf(userId)};
+        return db.rawQuery(query, selectionArgs);
+    }
 
 
 
