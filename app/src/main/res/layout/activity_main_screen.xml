@@ -1,16 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_gravity="bottom"
     android:background="?android:attr/windowBackground">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/calories_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Калории"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:padding="8dp"
+                android:layout_below="@id/calories_pie_chart1"
+                android:layout_centerHorizontal="true" />
+            <TextView
+                android:id="@+id/user_calories_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Калории пользователя: 0"
+                android:textSize="16sp"
+                android:padding="8dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
+            <!-- TextView для общих калорий -->
+            <TextView
+                android:id="@+id/total_calories_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Общие калории: 0"
+                android:textSize="16sp"
+                android:padding="8dp"
+                android:layout_below="@id/user_calories_text_view"
+                android:layout_centerHorizontal="true" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/calories_pie_chart1"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_below="@id/total_calories_text_view"
+                android:layout_marginTop="16dp"/>
+
+            <!-- Разделитель -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:layout_below="@id/calories_pie_chart1"/>
+
+            <!-- Добавляем заголовок для БЖУ -->
+            <TextView
+                android:id="@+id/macro_nutrients_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Белки, Жиры, Углеводы"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:padding="8dp"
+                android:layout_below="@id/calories_pie_chart1"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/total_protein_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Белки: 0 г"
+                android:textSize="16sp"
+                android:padding="8dp"
+                android:layout_below="@id/macro_nutrients_title"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/total_fat_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Жиры: 0 г"
+                android:textSize="16sp"
+                android:padding="8dp"
+                android:layout_below="@id/total_protein_text_view"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/total_carbohydrates_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Углеводы: 0 г"
+                android:textSize="16sp"
+                android:padding="8dp"
+                android:layout_below="@id/total_fat_text_view"
+                android:layout_centerHorizontal="true" />
+
+
+            <!-- Добавляем вторую диаграмму для БЖУ -->
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/calories_pie_chart2"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_below="@id/total_carbohydrates_text_view"
+                android:layout_marginTop="16dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:layout_below="@id/calories_pie_chart2"/>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+            android:visibility="invisible" />
+        </LinearLayout>
+    </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_navigation_menu" />
 
-</LinearLayout>
+</RelativeLayout>

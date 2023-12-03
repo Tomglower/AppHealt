@@ -15,6 +15,7 @@
 
         <activity
             android:name=".EditActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".SportActivity"

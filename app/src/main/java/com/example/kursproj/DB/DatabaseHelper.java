@@ -217,8 +217,69 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, selectionArgs);
     }
 
+    public int getTotalProductCaloriesForDate(String date, int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT SUM(calories) FROM products WHERE date_added = ? AND user_id = ?";
+        String[] selectionArgs = {date, String.valueOf(userId)};
+        Cursor cursor = db.rawQuery(query, selectionArgs);
 
+        if (cursor.moveToFirst()) {
+            return cursor.getInt(0);
+        } else {
+            return 0;
+        }
+    }
 
+    public int getTotalSportCaloriesForDate(String date, int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT SUM(calories) FROM sports WHERE date_added = ? AND user_id = ?";
+        String[] selectionArgs = {date, String.valueOf(userId)};
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        if (cursor.moveToFirst()) {
+            return cursor.getInt(0);
+        } else {
+            return 0;
+        }
+    }
+    public int getTotalProteinForDate(String date, int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT SUM(protein) FROM products WHERE date_added = ? AND user_id = ?";
+        String[] selectionArgs = {date, String.valueOf(userId)};
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        if (cursor.moveToFirst()) {
+            return cursor.getInt(0);
+        } else {
+            return 0;
+        }
+    }
+
+    public int getTotalFatForDate(String date, int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT SUM(fat) FROM products WHERE date_added = ? AND user_id = ?";
+        String[] selectionArgs = {date, String.valueOf(userId)};
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        if (cursor.moveToFirst()) {
+            return cursor.getInt(0);
+        } else {
+            return 0;
+        }
+    }
+
+    public int getTotalCarbohydratesForDate(String date, int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT SUM(carbohydrates) FROM products WHERE date_added = ? AND user_id = ?";
+        String[] selectionArgs = {date, String.valueOf(userId)};
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        if (cursor.moveToFirst()) {
+            return cursor.getInt(0);
+        } else {
+            return 0;
+        }
+    }
 
 
 }
