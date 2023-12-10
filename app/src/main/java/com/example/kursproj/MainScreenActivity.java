@@ -1,9 +1,18 @@
 package com.example.kursproj;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -26,10 +35,14 @@ public class MainScreenActivity extends AppCompatActivity {
     private TextView userCaloriesTextView, totalCaloriesTextView;
     private PieChart pieChart;
     private PieChart pieChart2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+
+
+
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         userCaloriesTextView = findViewById(R.id.user_calories_text_view);
         totalCaloriesTextView = findViewById(R.id.total_calories_text_view);
@@ -40,6 +53,7 @@ public class MainScreenActivity extends AppCompatActivity {
         setupPieChart();
         displayTotalMacro();
         setupPieChart2();
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -66,6 +80,7 @@ public class MainScreenActivity extends AppCompatActivity {
             }
         });
     }
+
     private void displayUserCalories() {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         int userId = getUserId(); // Получаем ID текущего пользователя
@@ -74,6 +89,7 @@ public class MainScreenActivity extends AppCompatActivity {
         // Отображаем калории пользователя на экране
         userCaloriesTextView.setText("Ваши калории: " + userCalories);
     }
+
     private void displayTotalCalories() {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         int userId = getUserId(); // Получаем ID текущего пользователя
@@ -93,11 +109,13 @@ public class MainScreenActivity extends AppCompatActivity {
         // Отображаем общее количество калорий на экране
         totalCaloriesTextView.setText("Общие калории: " + totalCalories);
     }
+
     private int getUserId() {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         int userId = sharedPreferences.getInt("user_id", 0);
         return userId;
     }
+
     private void setupPieChart() {
         // Получаем данные для диаграммы
         PieData pieData = generatePieData();
@@ -115,6 +133,7 @@ public class MainScreenActivity extends AppCompatActivity {
         // Обновляем диаграмму
         pieChart.invalidate();
     }
+
     private PieData generatePieData() {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         int userId = getUserId(); // Получаем ID текущего пользователя
@@ -129,7 +148,7 @@ public class MainScreenActivity extends AppCompatActivity {
         entries.add(new PieEntry(dbHelper.getCaloriesForUser(userId), "Норма"));
 
         // Создаем набор данных
-        PieDataSet dataSet = new PieDataSet(entries,"");
+        PieDataSet dataSet = new PieDataSet(entries, "");
 
         // Устанавливаем прочие параметры для набора данных (цвета, размеры и т.д.)
         int[] customColors = {Color.RED, Color.BLUE};
@@ -139,6 +158,7 @@ public class MainScreenActivity extends AppCompatActivity {
         // Возвращаем данные для диаграммы
         return new PieData(dataSet);
     }
+
     private void displayTotalMacro() {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         int userId = getUserId(); // Получаем ID текущего пользователя
@@ -158,6 +178,7 @@ public class MainScreenActivity extends AppCompatActivity {
         totalFatTextView.setText("Жиры: " + totalFat + " г");
         totalCarbohydratesTextView.setText("Углеводы: " + totalCarbohydrates + " г");
     }
+
     private void setupPieChart2() {
         // Получаем данные для диаграммы
         PieData pieData = displayTotalPFC();
@@ -175,9 +196,10 @@ public class MainScreenActivity extends AppCompatActivity {
         // Обновляем диаграмму
         pieChart2.invalidate();
     }
+
     private PieData displayTotalPFC() {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
-        int userId = getUserId(); // Получаем ID текущего пользователя
+        int userId = getUserId();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String currentDate = sdf.format(new Date());
         int totalProtein = dbHelper.getTotalProteinForDate(currentDate, userId);
@@ -190,7 +212,7 @@ public class MainScreenActivity extends AppCompatActivity {
         entries.add(new PieEntry(totalCarbohydrates, "Углеводы"));
 
         // Создаем набор данных
-        PieDataSet dataSet = new PieDataSet(entries,"");
+        PieDataSet dataSet = new PieDataSet(entries, "");
 
         // Устанавливаем прочие параметры для набора данных (цвета, размеры и т.д.)
         int[] customColors = {Color.rgb(255, 102, 0), Color.rgb(0, 153, 204), Color.rgb(51, 204, 51)};
@@ -200,4 +222,7 @@ public class MainScreenActivity extends AppCompatActivity {
         // Возвращаем данные для диаграммы
         return new PieData(dataSet);
     }
+
+
+
 }
