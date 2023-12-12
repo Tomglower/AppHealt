@@ -115,7 +115,6 @@ public class SportActivity extends AppCompatActivity {
 
         Cursor cursor = dbHelper.getSportsForDate(todayDate, userId);
 
-        // Определите столбцы, которые будут отображаться
         String[] fromColumns = {
                 "exercise_type",
                 "duration",

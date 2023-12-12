@@ -43,17 +43,15 @@ public class EditActivity extends AppCompatActivity {
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Меняем значение remember_me в SharedPreferences на false
                 SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean("remember_me", false);
                 editor.apply();
 
-                // Переходим на экран MainActivity
                 Intent intent = new Intent(EditActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-                finish(); // Закрываем текущую активити, чтобы пользователь не мог вернуться на экран EditActivity
+                finish();
             }
         });
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

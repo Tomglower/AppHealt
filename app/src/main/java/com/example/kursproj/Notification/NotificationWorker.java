@@ -34,11 +34,10 @@ public class NotificationWorker extends Worker {
     }
 
     private void showNotification() {
-        // Create a notification channel (required for Android 8.0 and above)
         createNotificationChannel();
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "channel_id")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.mipmap.icon)
                 .setContentTitle("AppHealth!")
                 .setContentText("Не забудьте заполнить поля спорта и пищи!")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
@@ -73,7 +72,6 @@ public class NotificationWorker extends Worker {
     }
 
     public static void scheduleNotification() {
-        // Set the execution time to 10:00 AM, 3:00 PM, and 8:00 PM
         Calendar calendar1 = Calendar.getInstance();
         calendar1.set(Calendar.HOUR_OF_DAY, 10);
         calendar1.set(Calendar.MINUTE, 00);
@@ -89,7 +87,6 @@ public class NotificationWorker extends Worker {
         calendar3.set(Calendar.MINUTE, 0);
         calendar3.set(Calendar.SECOND, 0);
 
-        // Create tasks for WorkManager
         OneTimeWorkRequest notificationWork1 = createNotificationWorkRequest(
                 calendar1.getTimeInMillis() - System.currentTimeMillis());
 

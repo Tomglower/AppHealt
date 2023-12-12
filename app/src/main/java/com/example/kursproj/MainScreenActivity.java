@@ -83,30 +83,25 @@ public class MainScreenActivity extends AppCompatActivity {
 
     private void displayUserCalories() {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
-        int userId = getUserId(); // Получаем ID текущего пользователя
+        int userId = getUserId();
         int userCalories = dbHelper.getCaloriesForUser(userId);
 
-        // Отображаем калории пользователя на экране
         userCaloriesTextView.setText("Ваши калории: " + userCalories);
     }
 
     private void displayTotalCalories() {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
-        int userId = getUserId(); // Получаем ID текущего пользователя
+        int userId = getUserId();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String currentDate = sdf.format(new Date());
 
-        // Суммируем калории из таблицы "products" за сегодня
         int totalProductCalories = dbHelper.getTotalProductCaloriesForDate(currentDate, userId);
 
-        // Суммируем калории из таблицы "sports" за сегодня
         int totalSportCalories = dbHelper.getTotalSportCaloriesForDate(currentDate, userId);
 
-        // Суммируем общее количество калорий
         int totalCalories = totalProductCalories + totalSportCalories;
 
-        // Отображаем общее количество калорий на экране
         totalCaloriesTextView.setText("Общие калории: " + totalCalories);
     }
 
@@ -117,26 +112,19 @@ public class MainScreenActivity extends AppCompatActivity {
     }
 
     private void setupPieChart() {
-        // Получаем данные для диаграммы
         PieData pieData = generatePieData();
 
-        // Настраиваем внешний вид диаграммы
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
 
-        // Устанавливаем данные в диаграмму
         pieChart.setData(pieData);
 
-        // Добавляем цветовую палитру
-
-
-        // Обновляем диаграмму
         pieChart.invalidate();
     }
 
     private PieData generatePieData() {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
-        int userId = getUserId(); // Получаем ID текущего пользователя
+        int userId = getUserId();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String currentDate = sdf.format(new Date());
         int totalProductCalories = dbHelper.getTotalProductCaloriesForDate(currentDate, userId);
@@ -147,21 +135,18 @@ public class MainScreenActivity extends AppCompatActivity {
         entries.add(new PieEntry(totalCalories, "Сумма"));
         entries.add(new PieEntry(dbHelper.getCaloriesForUser(userId), "Норма"));
 
-        // Создаем набор данных
         PieDataSet dataSet = new PieDataSet(entries, "");
 
-        // Устанавливаем прочие параметры для набора данных (цвета, размеры и т.д.)
         int[] customColors = {Color.RED, Color.BLUE};
         dataSet.setColors(ColorTemplate.createColors(customColors));
         dataSet.setValueTextSize(12f);
 
-        // Возвращаем данные для диаграммы
         return new PieData(dataSet);
     }
 
     private void displayTotalMacro() {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
-        int userId = getUserId(); // Получаем ID текущего пользователя
+        int userId = getUserId();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String currentDate = sdf.format(new Date());
 
@@ -169,7 +154,6 @@ public class MainScreenActivity extends AppCompatActivity {
         int totalFat = dbHelper.getTotalFatForDate(currentDate, userId);
         int totalCarbohydrates = dbHelper.getTotalCarbohydratesForDate(currentDate, userId);
 
-        // Отображаем общее количество белков, жиров и углеводов на экране
         TextView totalProteinTextView = findViewById(R.id.total_protein_text_view);
         TextView totalFatTextView = findViewById(R.id.total_fat_text_view);
         TextView totalCarbohydratesTextView = findViewById(R.id.total_carbohydrates_text_view);
@@ -180,20 +164,15 @@ public class MainScreenActivity extends AppCompatActivity {
     }
 
     private void setupPieChart2() {
-        // Получаем данные для диаграммы
         PieData pieData = displayTotalPFC();
 
-        // Настраиваем внешний вид диаграммы
         pieChart2.setUsePercentValues(true);
         pieChart2.getDescription().setEnabled(false);
 
-        // Устанавливаем данные в диаграмму
         pieChart2.setData(pieData);
 
-        // Добавляем цветовую палитру
 
 
-        // Обновляем диаграмму
         pieChart2.invalidate();
     }
 
@@ -211,15 +190,12 @@ public class MainScreenActivity extends AppCompatActivity {
         entries.add(new PieEntry(totalFat, "Жиры"));
         entries.add(new PieEntry(totalCarbohydrates, "Углеводы"));
 
-        // Создаем набор данных
         PieDataSet dataSet = new PieDataSet(entries, "");
 
-        // Устанавливаем прочие параметры для набора данных (цвета, размеры и т.д.)
         int[] customColors = {Color.rgb(255, 102, 0), Color.rgb(0, 153, 204), Color.rgb(51, 204, 51)};
         dataSet.setColors(ColorTemplate.createColors(customColors));
         dataSet.setValueTextSize(12f);
 
-        // Возвращаем данные для диаграммы
         return new PieData(dataSet);
     }
 

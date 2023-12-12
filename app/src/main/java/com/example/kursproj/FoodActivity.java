@@ -133,7 +133,6 @@ public class FoodActivity extends AppCompatActivity {
 
         Cursor cursor = dbHelper.getProductsForDate(todayDate, userId);
 
-        // Определите столбцы, которые будут отображаться
         String[] fromColumns = {
                 "product_name",
                 "calories",

@@ -209,7 +209,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.insert("sports", null, contentValues);
     }
 
-    // Метод для получения спортивных активностей за определенную дату
     public Cursor getSportsForDate(String date, int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT ID AS _id, exercise_type, duration, calories FROM sports WHERE date_added = ? AND user_id = ?";
