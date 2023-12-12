@@ -116,17 +116,41 @@
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray"
                 android:layout_below="@id/calories_pie_chart2"/>
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-            android:visibility="invisible" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray"
                 android:layout_below="@id/calories_pie_chart1"/>
+
+
+            <TextView
+                android:id="@+id/sports_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Тренировки"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:padding="8dp"
+                android:layout_below="@id/calories_pie_chart2"
+                android:layout_centerHorizontal="true" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/sports_bar_chart"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_below="@id/sports_title"
+                android:layout_marginTop="16dp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:layout_below="@id/sports_bar_chart"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+            android:visibility="invisible" />
+
 
 
         </LinearLayout>

@@ -18,10 +18,20 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.kursproj.DB.DatabaseHelper;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -35,7 +45,7 @@ public class MainScreenActivity extends AppCompatActivity {
     private TextView userCaloriesTextView, totalCaloriesTextView;
     private PieChart pieChart;
     private PieChart pieChart2;
-
+    private BarChart sportsBarChart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +63,8 @@ public class MainScreenActivity extends AppCompatActivity {
         setupPieChart();
         displayTotalMacro();
         setupPieChart2();
-
+        sportsBarChart = findViewById(R.id.sports_bar_chart);
+        setupSportsBarChart();
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -100,7 +111,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
         int totalSportCalories = dbHelper.getTotalSportCaloriesForDate(currentDate, userId);
 
-        int totalCalories = totalProductCalories + totalSportCalories;
+        int totalCalories = totalProductCalories - totalSportCalories;
 
         totalCaloriesTextView.setText("Общие калории: " + totalCalories);
     }
@@ -198,6 +209,45 @@ public class MainScreenActivity extends AppCompatActivity {
 
         return new PieData(dataSet);
     }
+    private void setupSportsBarChart() {
+        BarData barData = generateSportsBarData();
+
+        sportsBarChart.getDescription().setEnabled(false);
+        sportsBarChart.setData(barData);
+
+        sportsBarChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        sportsBarChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(getDaysOfWeek()));
+        sportsBarChart.getXAxis().setGranularity(1f);
+        sportsBarChart.getAxisLeft().setGranularity(1f);
+
+        sportsBarChart.invalidate();
+    }
+
+    private BarData generateSportsBarData() {
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        int userId = getUserId();
+
+        // Получаем данные о тренировках для графика
+        ArrayList<BarEntry> entries = dbHelper.getSportsBarEntriesForChart(userId);
+
+        if (entries.isEmpty()) {
+            // Обработка случая, когда нет данных (например, показ сообщения или обработка по вашему усмотрению)
+            return null; // или возвращайте пустые данные, если это предпочтительнее
+        }
+
+        BarDataSet dataSet = new BarDataSet(entries, "Тренировки");
+        dataSet.setColor(Color.BLUE);
+        dataSet.setValueTextSize(10f);
+
+        return new BarData(dataSet);
+    }
+
+    private String[] getDaysOfWeek() {
+        // Возвращает массив дней недели для использования на оси X
+        return new String[]{"Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"};
+    }
+
+
 
 
 
