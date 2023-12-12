@@ -12,6 +12,7 @@ import com.github.mikephil.charting.data.Entry;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -220,7 +221,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, selectionArgs);
     }
 
-    public int getTotalProductCaloriesForDate(String date, int userId) {
+    public  int getTotalProductCaloriesForDate(String date, int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT SUM(calories) FROM products WHERE date_added = ? AND user_id = ?";
         String[] selectionArgs = {date, String.valueOf(userId)};
@@ -233,7 +234,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public int getTotalSportCaloriesForDate(String date, int userId) {
+    public  int getTotalSportCaloriesForDate(String date, int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT SUM(calories) FROM sports WHERE date_added = ? AND user_id = ?";
         String[] selectionArgs = {date, String.valueOf(userId)};
@@ -287,12 +288,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<BarEntry> getSportsBarEntriesForChart(int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // Создаем временную таблицу с днями недели от 0 до 6 (включительно)
         db.execSQL("CREATE TEMPORARY TABLE IF NOT EXISTS days_of_week (day_of_week INTEGER PRIMARY KEY);");
         db.execSQL("INSERT OR IGNORE INTO days_of_week VALUES (0), (1), (2), (3), (4), (5), (6);");
 
-        // Запрос с использованием LEFT JOIN для включения всех дней недели
-        String query = "SELECT days_of_week.day_of_week, COUNT(sports.date_added) " +
+        String query = "SELECT days_of_week.day_of_week -1, COUNT(sports.date_added) " +
                 "FROM days_of_week " +
                 "LEFT JOIN sports ON days_of_week.day_of_week = strftime('%w', sports.date_added) AND sports.user_id = ? " +
                 "GROUP BY days_of_week.day_of_week " +
@@ -314,6 +313,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return entries;
     }
+
+
+
+
+
 
 
 }

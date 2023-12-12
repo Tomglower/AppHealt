@@ -22,6 +22,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -65,6 +66,7 @@ public class MainScreenActivity extends AppCompatActivity {
         setupPieChart2();
         sportsBarChart = findViewById(R.id.sports_bar_chart);
         setupSportsBarChart();
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -89,6 +91,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 }
                 return false;
             }
+
         });
     }
 
@@ -227,12 +230,10 @@ public class MainScreenActivity extends AppCompatActivity {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         int userId = getUserId();
 
-        // Получаем данные о тренировках для графика
         ArrayList<BarEntry> entries = dbHelper.getSportsBarEntriesForChart(userId);
 
         if (entries.isEmpty()) {
-            // Обработка случая, когда нет данных (например, показ сообщения или обработка по вашему усмотрению)
-            return null; // или возвращайте пустые данные, если это предпочтительнее
+            return null;
         }
 
         BarDataSet dataSet = new BarDataSet(entries, "Тренировки");
@@ -243,11 +244,8 @@ public class MainScreenActivity extends AppCompatActivity {
     }
 
     private String[] getDaysOfWeek() {
-        // Возвращает массив дней недели для использования на оси X
         return new String[]{"Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"};
     }
-
-
 
 
 

@@ -146,6 +146,8 @@
                 android:background="@android:color/darker_gray"
                 android:layout_below="@id/sports_bar_chart"/>
 
+
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
