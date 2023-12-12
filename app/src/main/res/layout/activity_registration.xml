@@ -10,7 +10,7 @@
         android:id="@+id/textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Registration"
+        android:text="Регистрация"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:textSize="24sp"
@@ -20,9 +20,8 @@
         android:id="@+id/usernameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="roman"
         android:layout_below="@id/textview"
-        android:hint="Username"
+        android:hint="Имя пользователя"
         android:layout_marginTop="20dp"
         />
 
@@ -30,8 +29,7 @@
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
-        android:text="12345"
+        android:hint="Пароль"
         android:inputType="textPassword"
         android:layout_below="@id/usernameEditText"
         android:layout_marginTop="20dp"
@@ -41,7 +39,7 @@
         android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register"
+        android:text="Зарегистрироваться"
         android:layout_below="@id/passwordEditText"
         android:layout_marginTop="20dp"
         />
@@ -50,7 +48,7 @@
         android:id="@+id/goLog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="Вход"
         android:layout_below="@id/registerButton"
         android:layout_marginTop="20dp"
         />

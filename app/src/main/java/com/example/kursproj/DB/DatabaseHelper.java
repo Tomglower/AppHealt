@@ -343,7 +343,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return entries;
     }
-
+    public int deleteProduct(long productId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = "ID = ?";
+        String[] whereArgs = { String.valueOf(productId) };
+        return db.delete("products", whereClause, whereArgs);
+    }
+    public int deleteSport(long activityId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = "ID = ?";
+        String[] whereArgs = { String.valueOf(activityId) };
+        return db.delete("sports", whereClause, whereArgs);
+    }
 
 
 

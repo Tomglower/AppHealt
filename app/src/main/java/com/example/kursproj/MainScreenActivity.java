@@ -133,7 +133,11 @@ public class MainScreenActivity extends AppCompatActivity {
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
 
-        pieChart.setData(pieData);
+        if (pieData != null) {
+            pieChart.setData(pieData);
+        } else {
+            pieChart.setNoDataText("Нет данных");
+        }
 
         pieChart.invalidate();
     }
@@ -185,7 +189,12 @@ public class MainScreenActivity extends AppCompatActivity {
         pieChart2.setUsePercentValues(true);
         pieChart2.getDescription().setEnabled(false);
 
-        pieChart2.setData(pieData);
+        if (pieData != null) {
+            pieChart2.setData(pieData);
+        } else {
+            // Если данных нет, установите текст "Нет данных"
+            pieChart2.setNoDataText("Нет данных");
+        }
 
 
 

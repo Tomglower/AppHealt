@@ -46,6 +46,7 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics-buildtools:2.9.9")
     implementation(files("libs/MPAndroidChart-v3.0.1.jar"))
     implementation("androidx.work:work-runtime:2.9.0")
+    implementation ("androidx.recyclerview:recyclerview:1.2.1")
     annotationProcessor ("androidx.room:room-compiler:2.4.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

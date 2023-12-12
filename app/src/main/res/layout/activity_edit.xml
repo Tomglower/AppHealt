@@ -12,7 +12,7 @@
         android:id="@+id/textViewUserId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="User ID:"
+        android:text="Здравствуйте "
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,18 +33,26 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="16dp"
+        android:inputType="textPassword"
         android:hint="Пароль"
         app:layout_constraintTop_toBottomOf="@+id/editTextUsername"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
+    <CheckBox
+        android:id="@+id/showPasswordCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Показать пароль"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
     <EditText
         android:id="@+id/editTextCalories"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:hint="Норма калорий"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
+        app:layout_constraintTop_toBottomOf="@+id/showPasswordCheckBox"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -61,7 +69,7 @@
         android:id="@+id/exitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="300dp"
         android:text="Выход"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

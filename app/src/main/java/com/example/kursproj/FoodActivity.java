@@ -1,13 +1,18 @@
 package com.example.kursproj;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -72,6 +77,8 @@ public class FoodActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
         btnSaveProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,10 +127,40 @@ public class FoodActivity extends AppCompatActivity {
             }
 
         });
-
-
+        listViewProducts.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                showDeleteDialog(id); // Показываем диалог удаления при долгом нажатии
+                return true;
+            }
+        });
 
     }
+    private void showDeleteDialog(final long productId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Удаление продукта")
+                .setMessage("Вы уверены, что хотите удалить продукт?")
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteProduct(productId);
+                    }
+                })
+                .setNegativeButton("Отмена", null)
+                .show();
+    }
+
+    private void deleteProduct(long productId) {
+        int result = dbHelper.deleteProduct(productId);
+
+        if (result > 0) {
+            Toast.makeText(this, "Продукт успешно удален", Toast.LENGTH_SHORT).show();
+            displayProductsForToday();
+        } else {
+            Toast.makeText(this, "Ошибка при удалении продукта", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void displayProductsForToday() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String todayDate = sdf.format(new Date());
@@ -140,7 +177,6 @@ public class FoodActivity extends AppCompatActivity {
                 "protein",
                 "carbohydrates",
                 "grams"
-
         };
 
         int[] toViews = {
@@ -150,9 +186,9 @@ public class FoodActivity extends AppCompatActivity {
                 R.id.proteinValue,
                 R.id.carbohydratesValue,
                 R.id.gramsValue
-
         };
 
+        // Создаем адаптер
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(
                 this,
                 R.layout.product_list_item,
@@ -161,6 +197,13 @@ public class FoodActivity extends AppCompatActivity {
                 toViews,
                 0
         );
+
+        // Присваиваем адаптер к ListView
         listViewProducts.setAdapter(adapter);
+
+        // Обновляем адаптер
+        adapter.swapCursor(cursor);
     }
+
+
 }

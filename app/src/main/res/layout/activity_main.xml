@@ -10,7 +10,7 @@
         android:id="@+id/textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="Вход"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:textSize="24sp"
@@ -20,8 +20,7 @@
         android:id="@+id/usernameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="roman"
-        android:hint="Username"
+        android:hint="Имя пользователя"
         android:layout_below="@+id/textview"
         android:layout_marginTop="20dp"
         />
@@ -30,26 +29,32 @@
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="12345"
-        android:hint="Password"
+        android:hint="Пароль"
         android:inputType="textPassword"
         android:layout_below="@id/usernameEditText"
         android:layout_marginTop="20dp"
         />
-
+    <CheckBox
+        android:id="@+id/showPasswordCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Показать пароль"
+        android:layout_below="@id/passwordEditText"
+        android:layout_marginTop="10dp"
+        />
     <CheckBox
         android:id="@+id/rememberMeCheckbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Запомнить меня"
-        android:layout_below="@id/passwordEditText"
+        android:layout_below="@id/showPasswordCheckBox"
         android:layout_marginTop="20dp"/>
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="Войти"
         android:layout_below="@id/rememberMeCheckbox"
         android:layout_marginTop="20dp"
         />
@@ -58,7 +63,7 @@
         android:id="@+id/goRegButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register"
+        android:text="Регистрация"
         android:layout_below="@id/loginButton"
         android:layout_marginTop="20dp"
         />

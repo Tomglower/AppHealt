@@ -71,39 +71,35 @@ public class NotificationWorker extends Worker {
         }
     }
 
-    public static void scheduleNotification() {
-        Calendar calendar1 = Calendar.getInstance();
-        calendar1.set(Calendar.HOUR_OF_DAY, 10);
-        calendar1.set(Calendar.MINUTE, 00);
-        calendar1.set(Calendar.SECOND, 0);
+    public static void scheduleNotifications() {
+        OneTimeWorkRequest notificationWork1 = createNotificationWorkRequest(10, 00);
+        OneTimeWorkRequest notificationWork2 = createNotificationWorkRequest(15, 00);
+        OneTimeWorkRequest notificationWork3 = createNotificationWorkRequest(20, 00);
 
-        Calendar calendar2 = Calendar.getInstance();
-        calendar2.set(Calendar.HOUR_OF_DAY, 15);
-        calendar2.set(Calendar.MINUTE, 00);
-        calendar2.set(Calendar.SECOND, 0);
-
-        Calendar calendar3 = Calendar.getInstance();
-        calendar3.set(Calendar.HOUR_OF_DAY, 20);
-        calendar3.set(Calendar.MINUTE, 0);
-        calendar3.set(Calendar.SECOND, 0);
-
-        OneTimeWorkRequest notificationWork1 = createNotificationWorkRequest(
-                calendar1.getTimeInMillis() - System.currentTimeMillis());
-
-        OneTimeWorkRequest notificationWork2 = createNotificationWorkRequest(
-                calendar2.getTimeInMillis() - System.currentTimeMillis());
-
-        OneTimeWorkRequest notificationWork3 = createNotificationWorkRequest(
-                calendar3.getTimeInMillis() - System.currentTimeMillis());
-
-        // Enqueue the tasks
+        // Enqueue каждой задачи по отдельности
         WorkManager.getInstance().enqueue(notificationWork1);
         WorkManager.getInstance().enqueue(notificationWork2);
         WorkManager.getInstance().enqueue(notificationWork3);
     }
-    private static OneTimeWorkRequest createNotificationWorkRequest(long delay) {
+
+    private static OneTimeWorkRequest createNotificationWorkRequest(int hour, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+
+        long delay = calendar.getTimeInMillis() - System.currentTimeMillis();
+
+        // Если задержка отрицательная (время уже прошло), добавляем 24 часа
+        if (delay < 0) {
+            delay += 24 * 60 * 60 * 1000;
+        }
+
+        // Создание и возвращение объекта OneTimeWorkRequest с заданной задержкой
         return new OneTimeWorkRequest.Builder(NotificationWorker.class)
                 .setInitialDelay(delay, TimeUnit.MILLISECONDS)
                 .build();
     }
+
+
 }

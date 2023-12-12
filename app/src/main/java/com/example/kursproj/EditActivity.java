@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +37,7 @@ public class EditActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         editTextUsername = findViewById(R.id.editTextUsername);
         editTextPassword = findViewById(R.id.editTextPassword);
+        CheckBox showPasswordCheckBox = findViewById(R.id.showPasswordCheckBox);
         editTextCalories = findViewById(R.id.editTextCalories);
         saveButton = findViewById(R.id.saveButton);
         textViewUserId = findViewById(R.id.textViewUserId);
@@ -77,12 +80,13 @@ public class EditActivity extends AppCompatActivity {
                 }
                 return false;
             }
+
         });
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         userId = sharedPreferences.getInt("user_id", 0);
         TextView textViewUserId = findViewById(R.id.textViewUserId);
-        textViewUserId.setText("User ID: " + userId);
+        textViewUserId.setText("Ваш User_id: " + userId);
         User user = dbHelper.getUserById(userId);
         if (user != null) {
             editTextUsername.setText(user.getUsername());
@@ -121,6 +125,14 @@ public class EditActivity extends AppCompatActivity {
                 }
             }
 
+        });
+        showPasswordCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // В зависимости от состояния CheckBox устанавливаем/снимаем трансформацию для поля пароля
+            if (isChecked) {
+                editTextPassword.setTransformationMethod(null); // Показываем пароль
+            } else {
+                editTextPassword.setTransformationMethod(new PasswordTransformationMethod()); // Скрываем пароль
+            }
         });
     }
 }

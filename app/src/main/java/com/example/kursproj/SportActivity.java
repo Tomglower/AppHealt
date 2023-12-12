@@ -1,13 +1,16 @@
 package com.example.kursproj;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -105,6 +108,37 @@ public class SportActivity extends AppCompatActivity {
                 }
             }
         });
+        listViewActivities.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                showDeleteDialog(id); // Показываем диалог удаления при долгом нажатии
+                return true;
+            }
+        });
+    }
+    private void showDeleteDialog(final long activityId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Удаление активности")
+                .setMessage("Вы уверены, что хотите удалить активность?")
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteActivity(activityId);
+                    }
+                })
+                .setNegativeButton("Отмена", null)
+                .show();
+    }
+
+    private void deleteActivity(long activityId) {
+        int result = dbHelper.deleteSport(activityId);
+
+        if (result > 0) {
+            Toast.makeText(this, "Активность успешно удалена", Toast.LENGTH_SHORT).show();
+            displayActivitiesForToday();
+        } else {
+            Toast.makeText(this, "Ошибка при удалении активности", Toast.LENGTH_SHORT).show();
+        }
     }
     private void displayActivitiesForToday() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());

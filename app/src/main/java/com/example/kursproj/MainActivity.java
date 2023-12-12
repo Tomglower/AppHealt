@@ -3,9 +3,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        NotificationWorker.scheduleNotification();
+        NotificationWorker.scheduleNotifications();
 
         dbHelper = new DatabaseHelper(this);
         usernameEditText = findViewById(R.id.usernameEditText);
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         RegButton = findViewById(R.id.goRegButton);
         rememberMeCheckbox = findViewById(R.id.rememberMeCheckbox);
-
+        CheckBox showPasswordCheckBox = findViewById(R.id.showPasswordCheckBox);
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         boolean rememberMe = sharedPreferences.getBoolean("remember_me", false);
         if (rememberMe) {
@@ -76,7 +78,18 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-
+        showPasswordCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // Показать пароль
+                    passwordEditText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                } else {
+                    // Скрыть пароль
+                    passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+            }
+        });
     }
     private void saveUserIdToSharedPreferences(int userId, boolean rememberMe) {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
