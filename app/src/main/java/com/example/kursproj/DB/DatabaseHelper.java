@@ -315,6 +315,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    public ArrayList<BarEntry> getCaloriesBarEntriesForChart(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        db.execSQL("CREATE TEMPORARY TABLE IF NOT EXISTS days_of_week (day_of_week INTEGER PRIMARY KEY);");
+        db.execSQL("INSERT OR IGNORE INTO days_of_week VALUES (0), (1), (2), (3), (4), (5), (6);");
+
+        String query = "SELECT days_of_week.day_of_week - 1, SUM(products.calories) " +
+                "FROM days_of_week " +
+                "LEFT JOIN products ON days_of_week.day_of_week = strftime('%w', products.date_added) AND products.user_id = ? " +
+                "GROUP BY days_of_week.day_of_week " +
+                "ORDER BY days_of_week.day_of_week;";
+
+        String[] selectionArgs = {String.valueOf(userId)};
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        ArrayList<BarEntry> entries = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                int dayOfWeek = cursor.getInt(0);
+                int totalCalories = cursor.getInt(1);
+
+                entries.add(new BarEntry(dayOfWeek, totalCalories));
+            } while (cursor.moveToNext());
+        }
+
+        return entries;
+    }
 
 
 

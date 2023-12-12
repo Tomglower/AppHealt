@@ -47,6 +47,7 @@ public class MainScreenActivity extends AppCompatActivity {
     private PieChart pieChart;
     private PieChart pieChart2;
     private BarChart sportsBarChart;
+    private BarChart caloriesChart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +67,8 @@ public class MainScreenActivity extends AppCompatActivity {
         setupPieChart2();
         sportsBarChart = findViewById(R.id.sports_bar_chart);
         setupSportsBarChart();
-
+        caloriesChart = findViewById(R.id.caloriesChart);
+        setupCaloriesBarChart();
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -246,7 +248,36 @@ public class MainScreenActivity extends AppCompatActivity {
     private String[] getDaysOfWeek() {
         return new String[]{"Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"};
     }
+    private void setupCaloriesBarChart() {
+        BarData barData = generateCaloriesBarData();
 
+        caloriesChart.getDescription().setEnabled(false);
+        caloriesChart.setData(barData);
+
+        caloriesChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        caloriesChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(getDaysOfWeek()));
+        caloriesChart.getXAxis().setGranularity(1f);
+        caloriesChart.getAxisLeft().setGranularity(1f);
+
+        caloriesChart.invalidate();
+    }
+
+    private BarData generateCaloriesBarData() {
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        int userId = getUserId();
+
+        ArrayList<BarEntry> entries = dbHelper.getCaloriesBarEntriesForChart(userId);
+
+        if (entries.isEmpty()) {
+            return null;
+        }
+
+        BarDataSet dataSet = new BarDataSet(entries, "Потребление калорий");
+        dataSet.setColor(Color.GREEN);
+        dataSet.setValueTextSize(10f);
+
+        return new BarData(dataSet);
+    }
 
 
 }

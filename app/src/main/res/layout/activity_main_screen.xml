@@ -104,7 +104,6 @@
                 android:layout_centerHorizontal="true" />
 
 
-            <!-- Добавляем вторую диаграмму для БЖУ -->
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/calories_pie_chart2"
                 android:layout_width="match_parent"
@@ -116,11 +115,6 @@
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray"
                 android:layout_below="@id/calories_pie_chart2"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray"
-                android:layout_below="@id/calories_pie_chart1"/>
 
 
             <TextView
@@ -145,8 +139,24 @@
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray"
                 android:layout_below="@id/sports_bar_chart"/>
+            <TextView
+                android:id="@+id/caloriesweek_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Калории за неделю"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:padding="8dp"
+                android:layout_below="@id/calories_pie_chart2"
+                android:layout_centerHorizontal="true" />
 
-
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/caloriesChart"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_below="@id/caloriesweek_title"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"/>
 
             <View
                 android:layout_width="match_parent"
