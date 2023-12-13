@@ -76,7 +76,6 @@ public class NotificationWorker extends Worker {
         OneTimeWorkRequest notificationWork2 = createNotificationWorkRequest(15, 00);
         OneTimeWorkRequest notificationWork3 = createNotificationWorkRequest(20, 00);
 
-        // Enqueue каждой задачи по отдельности
         WorkManager.getInstance().enqueue(notificationWork1);
         WorkManager.getInstance().enqueue(notificationWork2);
         WorkManager.getInstance().enqueue(notificationWork3);
@@ -90,12 +89,10 @@ public class NotificationWorker extends Worker {
 
         long delay = calendar.getTimeInMillis() - System.currentTimeMillis();
 
-        // Если задержка отрицательная (время уже прошло), добавляем 24 часа
         if (delay < 0) {
             delay += 24 * 60 * 60 * 1000;
         }
 
-        // Создание и возвращение объекта OneTimeWorkRequest с заданной задержкой
         return new OneTimeWorkRequest.Builder(NotificationWorker.class)
                 .setInitialDelay(delay, TimeUnit.MILLISECONDS)
                 .build();
